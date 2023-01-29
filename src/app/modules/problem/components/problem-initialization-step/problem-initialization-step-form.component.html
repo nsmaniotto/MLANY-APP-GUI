@@ -1,0 +1,45 @@
+<form [formGroup]="formGroup">
+  <div
+    fxFlex
+    fxLayout="column"
+  >
+    <div fxLayout="column">
+      <mat-label>Problem Name *</mat-label>
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          placeholder="How would you like to identify it ? e.g. 'Car price prediction', 'Anomaly detection'"
+          formControlName="name"
+          required>
+          <mat-error *ngIf="formGroup.controls.name.hasError('required')">This field is required</mat-error>
+          <mat-error *ngIf="formGroup.controls.name.hasError('minlength')">This field must contain at least {{ problemNameFieldMinLength }} characters</mat-error>
+          <mat-error *ngIf="formGroup.controls.name.hasError('maxlength')">This field must contain at most {{ problemNameFieldMaxLength }} characters</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="column">
+      <mat-label>Associated Dataset *</mat-label>
+      <mat-form-field appearance="outline" fxFlexFill>
+        <mat-select
+          #datasetSelector
+          (click)="handleDatasetSelectorClick()"
+          formControlName="dataset"
+          placeholder="Select an existing dataset or import a new one"
+          required
+        >
+          <mat-option *ngFor="let datasetSuggestion of datasetSuggestions" [value]="datasetSuggestion">
+            {{ datasetSuggestion.fileInfo.name }}
+          </mat-option>
+        </mat-select>
+        <app-dataset-import-button
+          #datasetImportButton
+          matSuffix
+          (onError)="handleDatasetImportError($event)"
+          (onUpload)="handleDatasetUpload($event)"
+        >
+        </app-dataset-import-button>
+        <mat-error *ngIf="formGroup.controls.dataset.hasError('required') && !datasetImportErrorMessage">This field is required</mat-error>
+        <mat-error *ngIf="datasetImportErrorMessage">{{ datasetImportErrorMessage }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

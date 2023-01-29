@@ -1,0 +1,33 @@
+<h1>Solve your problem</h1>
+
+<div class="container" novalidate>
+  <form [formGroup]="form" (ngSubmit)="createProblemSolving(form.value)" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>PROBLEM</mat-label>
+      <mat-select formControlName="problemId">
+        <mat-option *ngFor="let problem of problemSuggestions" [value]="problem.id">
+          {{ problem.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="!form.controls['problemId'].valid && form.controls['problemId'].touched">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>DATASET</mat-label>
+      <mat-select formControlName="datasetId">
+        <mat-option *ngFor="let dataset of datasetSuggestions" [value]="dataset.id">
+          {{ dataset.fileInfo.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="!form.controls['datasetId'].valid && form.controls['datasetId'].touched">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-element">
+      <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!form.valid">SOLVE</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,30 @@
+<h1>Create your new problem</h1>
+
+<div class="container" novalidate>
+  <form [formGroup]="form" (ngSubmit)="createProblem(form.value)" class="form">
+
+    <mat-form-field class="form-element">
+      <mat-label>PROBLEM NAME</mat-label>
+      <input matInput placeholder="Ex: Animal name prediction" formControlName="name">
+      <mat-error *ngIf="!form.controls['name'].valid && form.controls['name'].touched">
+        Required field, must be between {{ nameFieldMinLength }} and {{ nameFieldMaxLength }} characters.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>PROBLEM TYPE</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of typeSuggestions" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="!form.controls['type'].valid && form.controls['type'].touched">
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <div class="form-element">
+      <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!form.valid">CREATE</button>
+    </div>
+  </form>
+</div>

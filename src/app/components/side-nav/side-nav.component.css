@@ -1,0 +1,44 @@
+mat-nav-list {
+  padding-top: 0;
+}
+
+mat-sidenav-content {
+  padding: 0rem 2rem 1rem;
+  margin-top: 1rem;
+  transition: all 0.24s ease-in-out 0s;
+}
+
+mat-sidenav-content.large{
+  margin-left:50px !important;
+}
+
+.active-link {
+  background: rgba(255,255,255,.04);
+}
+
+.chevron-button {
+  transition: 300ms ease-in-out;
+  transform: rotate(0deg);
+}
+
+.chevron-button.rotated {
+  transform: rotate(180deg);
+  right: 5px;
+  float: right;
+  position: absolute;
+}
+
+.item-icon, .item-label {
+  text-align: center;
+}
+
+.version-info {
+  color: grey;
+  font-size: x-small;
+  font-style: italic;
+}
+
+.version-info.minimized {
+  inline-size: 40px;
+  overflow-wrap: break-word;
+}

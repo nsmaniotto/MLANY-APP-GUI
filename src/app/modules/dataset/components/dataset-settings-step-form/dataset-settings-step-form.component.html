@@ -1,0 +1,72 @@
+<form
+  *ngIf="!isAnalysisInProgress;else analysisInProgress"
+  [formGroup]="formGroup"
+>
+  <div
+    fxFlex
+    fxLayout="column"
+    fxLayoutAlign="center"
+  >
+  <div
+    fxFlex
+    fxLayout="row"
+    fxLayoutAlign="space-evenly"
+  >
+    <div fxFlex="40" fxLayout="column">
+      <mat-label>Target Column *</mat-label>
+      <mat-form-field appearance="outline" fxFlexFill>
+        <mat-select
+          formControlName="targetColumn"
+          placeholder="Output column to be predicted"
+          required
+          [value]="this.formGroup.value.targetColumn"
+        >
+          <mat-option *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns" [value]="column">
+            {{ column.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formGroup.controls.targetColumn.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex="40" fxLayout="column">
+      <div fxLayout="column" *ngIf="this.formGroup.value.targetColumn">
+        <mat-label>Target Column Type</mat-label>
+        <mat-form-field appearance="outline" fxFlexFill>
+          <mat-select
+            formControlName="targetColumnType"
+            placeholder="Leave empty if other"
+          >
+            <mat-option [value]="undefined"></mat-option>
+            <mat-option *ngFor="let columnType of columnTypeSuggestions" [value]="columnType">
+              {{ columnType }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div>Dataset: {{ formGroup.value.dataset?.id }}</div>
+  <div>File Name: {{ formGroup.value.dataset?.fileInfo.name }}</div>
+  <div>File Path: {{ formGroup.value.dataset?.fileInfo.path }}</div>
+  <div>Dataset Content Info: {{ formGroup.value.dataset?.datasetContentInfo.id }}</div>
+  <div>Content analysis status: {{ formGroup.value.dataset?.datasetContentInfo.analysisStatus }}</div>
+  <div>Line count: {{ formGroup.value.dataset?.datasetContentInfo.lineCount }}</div>
+  <p>COLUMNS:</p>
+  <div *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns">
+    <div *ngIf="formGroup.value.targetColumn" >
+      id: {{ column.id }}, datasetContentInfoId: {{ column.datasetContentInfoId }}, name: {{ column.name }}, emptyValueCount: {{ column.emptyValueCount }}, correlation with target: {{ getCorrelationWithTargetColumn(column) | number:'1.0-2'}}
+    </div>
+  </div>
+  </div>
+</form>
+
+<ng-template #analysisInProgress>
+  <div
+    id="dataset-analysis-in-progress-message"
+    fxFill
+    fxLayout="column"
+    fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+      <h2>Dataset content analysis in progress, please wait</h2>
+  </div>
+</ng-template>

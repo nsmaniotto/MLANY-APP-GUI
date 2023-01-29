@@ -1,0 +1,4 @@
+export enum ProblemTypeEnum {
+  CLASSIFICATION = 'CLASSIFICATION',
+  REGRESSION = 'REGRESSION'
+}

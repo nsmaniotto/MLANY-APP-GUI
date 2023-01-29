@@ -1,0 +1,12 @@
+.endpoint-right-align {
+  text-align: right;
+}
+
+input.endpoint-right-align::-webkit-outer-spin-button,
+input.endpoint-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.endpoint-right-align {
+  -moz-appearance: textfield;
+}

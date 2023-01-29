@@ -1,0 +1,13 @@
+<div *ngIf="problems?.length === 0;else problemTable"
+  id="empty-problem-list-message"
+  fxFill
+  fxLayout="column"
+  fxLayoutAlign="center center">
+    <h1>No Problem created yet ?</h1>
+    <h2>Create your first Problem and let Machine Learning models solve it for you</h2>
+    <app-problem-create-button></app-problem-create-button>
+</div>
+
+<ng-template #problemTable>
+  <app-problem-table [problems]="problems"></app-problem-table>
+</ng-template>

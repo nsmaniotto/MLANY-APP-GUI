@@ -1,0 +1,37 @@
+<div>Dataset: {{ dataset.id }}</div>
+<div>File Name: {{ dataset.fileInfo.name }}</div>
+<div>File Path: {{ dataset.fileInfo.path }}</div>
+<div>Dataset Content Info: {{ dataset.datasetContentInfo.id }}</div>
+<div>Content analysis status: {{ dataset.datasetContentInfo.analysisStatus }}</div>
+<div>Line count: {{ dataset.datasetContentInfo.lineCount }}</div>
+<p>COLUMNS:</p>
+<div *ngFor="let column of dataset.datasetContentInfo.columns">
+  id: {{ column.id }}, datasetContentInfoId: {{ column.datasetContentInfoId }}, name: {{ column.name }}, empty value count: {{ column.emptyValueCount }}
+
+  <mat-label>I/O ?</mat-label>
+  <mat-radio-group
+    style="background-color:grey"
+    aria-label="Select an option"
+    [value]="column.inputOutput"
+    (change)="columnInputOutputChange(column, $event)"
+  >
+    <mat-radio-button value="">None</mat-radio-button>
+    <mat-radio-button *ngFor="let columnInputOutputAnswer of columnInputOutputAnswers" [value]="columnInputOutputAnswer">
+      {{ columnInputOutputAnswer }}
+    </mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field style="background-color:grey">
+    <mat-label>Type</mat-label>
+    <mat-select
+      [value]="column.type"
+      (selectionChange)="columnTypeChange(column, $event)"
+    >
+      <mat-option [value]="undefined"></mat-option>
+      <mat-option *ngFor="let columnType of columnTypeSuggestions" [value]="columnType">
+        {{ columnType }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+

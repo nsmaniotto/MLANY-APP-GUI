@@ -1,0 +1,19 @@
+<div>DATASET VIEW</div>
+
+<div *ngIf="isDatasetLoaded">
+  <app-dataset-details [dataset]="dataset"></app-dataset-details>
+</div>
+
+<form [formGroup]="form" style="background-color:grey">
+  <mat-form-field appearance="fill">
+    <mat-label>Linked Problem</mat-label>
+    <mat-select
+      formControlName="linkedProblemId"
+    >
+      <mat-option [value]="undefined"></mat-option>
+      <mat-option *ngFor="let problem of problemSuggestions" [value]="problem.id">
+        {{ problem.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

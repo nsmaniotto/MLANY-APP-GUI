@@ -1,0 +1,21 @@
+<div>PROBLEM SOLVING SECTION</div>
+
+
+<div *ngIf="isProblemSolvingLoaded">
+  <div *ngFor="let modelTraining of problemSolving.modelTrainings">
+    <div>ID: {{ modelTraining.id }}</div>
+    <div>STATUS: {{ modelTraining.status }}</div>
+    <div>MODEL/FAMILY: {{ modelTraining.modelInstance.model.name }} / {{ modelTraining.modelInstance.model.family }}</div>
+    <div>EVALUATION</div>
+    <div>MEAN SCORE: {{ modelTraining.modelTrainingResult?.meanScore }}</div>
+    <div>STANDARD DEVIATION: {{ modelTraining.modelTrainingResult?.standardDeviation }}</div>
+    <div>TRAINING ACCURACY: {{ modelTraining.modelTrainingResult?.trainingAccuracy }}</div>
+    <div>VALIDATION ACCURACY: {{ modelTraining.modelTrainingResult?.validationAccuracy }}</div>
+    <div>AVERAGE PREDICTION TIME: {{ modelTraining.modelTrainingResult?.averagePredictionTimeMs }}ms</div>
+
+    <button mat-raised-button color="secondary" [disabled]="!modelTraining.modelTrainingResult" (click)="deployModelFromTraining(modelTraining.id)">
+      Deploy this model
+    </button>
+    <hr>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div>Problem: {{ problem.name }}</div>
+<div>Type: {{ problem.type }}</div>
+
+<div>DEPLOYED MODEL FROM TRAINING:{{ problem.deployedModelFromTraining?.id }}</div>
+
+
+<div *ngIf="problem.deployedModelFromTraining" style="background-color:grey;">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Prediction/Feedback End point</mat-label>
+    <input matInput
+      [formControl]="endPoint"
+      type="text"
+      class="endpoint-right-align"
+      (change)="updateEndPoint()"
+      required>
+    <span matTextPrefix>{{ displayedApiBaseUrl }}&nbsp;</span>
+    <mat-hint align="end">{{ endPoint.value?.length }}/20</mat-hint>
+  </mat-form-field>
+
+  <div *ngIf="jsonPredictionPreview">
+    <pre>{{ jsonPredictionPreview | json }}</pre>
+  </div>
+</div>
+

@@ -1,0 +1,40 @@
+<mat-sidenav-container autosized fxFlex>
+  <mat-sidenav #sidenav mode="side" fxLayout="column" fxLayoutAlign="space-between" fixedInViewport="false" opened fxFlex>
+    <mat-nav-list fxLayout="column" fxLayoutAlign="space-between center" fxFill>
+      <mat-list-item (click)="toggle()">
+        <div
+          class="chevron-button bi bi-chevron-right"
+          [class.rotated] = "isExpanded"
+          aria-label="Side navigation toggling"
+        >
+        </div>
+      </mat-list-item>
+      <div fxLayout="column" fxLayoutGap="20px">
+        <mat-list-item [routerLink]="problemsPath" routerLinkActive="active-link">
+          <em matLine class="item-icon bi bi-puzzle" aria-label="Problems"></em>
+          <span matLine class="item-label" *ngIf="isExpanded">Problems</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="datasetsPath" routerLinkActive="active-link">
+          <em matLine class="item-icon bi bi-file-earmark-spreadsheet" aria-label="Datasets"></em>
+          <span matLine class="item-label" *ngIf="isExpanded">Datasets</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="modelsPath" routerLinkActive="active-link">
+          <em matLine class="item-icon bi bi-boxes" aria-label="Models"></em>
+          <span matLine class="item-label" *ngIf="isExpanded">Models</span>
+        </mat-list-item>
+      </div>
+      <div
+        *ngIf="true"
+        class="version-info"
+        [class.minimized] = "!isExpanded"
+      >
+        {{ appName }} - {{ appVersion }}
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content [ngClass]="{'large': !isExpanded}" fxFlex>
+    <div fxFlex>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

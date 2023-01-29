@@ -1,0 +1,15 @@
+<mat-toolbar>
+  <button mat-icon-button aria-hidden="false" aria-label="Home icon to return to home screen" routerLink="/">
+    <mat-icon>home</mat-icon>
+  </button>
+  <span translate="no">{{ appName }}</span>
+  <span class="spacer"></span>
+  <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+    <button mat-flat-button>
+      Register
+    </button>
+    <button mat-flat-button color="primary">
+      Login
+    </button>
+  </div>
+</mat-toolbar>

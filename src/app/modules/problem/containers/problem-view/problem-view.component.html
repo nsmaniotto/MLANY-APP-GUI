@@ -1,0 +1,24 @@
+<div>PROBLEM VIEW</div>
+
+<div *ngIf="isProblemLoaded">
+  <app-problem-details [problem]="problem"></app-problem-details>
+</div>
+
+LINKED DATASETS:
+<div *ngFor="let linkedDataset of linkedDatasets">
+  <div>ID:{{ linkedDataset.id }}</div>
+  <div>FILE NAME:{{ linkedDataset.fileInfo.name }}</div>
+  <hr>
+</div>
+
+<br>
+
+PROBLEM SOLVINGS:
+<app-problem-solve-button></app-problem-solve-button>
+
+<div *ngFor="let problemSolving of problem?.problemSolvings">
+  <div>ID:{{ problemSolving.id }}</div>
+  <div>STATUS:{{ problemSolving.status }}</div>
+  <button mat-raised-button color="primary" [routerLink]="'/problem/solving/' + problemSolving.id">SHOW</button>
+  <hr>
+</div>

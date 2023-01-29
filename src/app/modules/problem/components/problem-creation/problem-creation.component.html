@@ -1,0 +1,79 @@
+<div id="problem-creation-stepper" fxFill>
+  <mat-stepper [linear]="true" #stepper fxFlex>
+    <mat-step
+      fxFlex
+      label="PROBLEM INITIALIZATION"
+      [stepControl]="problemInitializationFormGroup"
+    >
+      <form
+        [formGroup]="problemInitializationFormGroup"
+        fxFlex
+        fxLayout="column"
+        fxLayoutAlign="space-between"
+      >
+        <h1 class="step-title">Problem Initialization</h1>
+        <app-problem-initialization-step-form
+          [formGroup]="problemInitializationFormGroup"
+          ngClass="problem-initialization-step-form"
+          (onFormChange)="handleProblemInitializationFormChange($event)"
+        ></app-problem-initialization-step-form>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <button mat-stroked-button color="basic" (click)="cancelProblemCreation()">Cancel</button>
+          <button mat-stroked-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step
+      fxFlex
+      label="DATASET SETTINGS"
+      [stepControl]="datasetSettingsFormGroup"
+    >
+      <form
+        [formGroup]="datasetSettingsFormGroup"
+        fxFlex
+        fxLayout="column"
+        fxLayoutAlign="space-between"
+      >
+        <h1 class="step-title">Dataset Settings</h1>
+        <app-dataset-settings-step-form
+          [formGroup]="datasetSettingsFormGroup"
+          ngClass="flex-scrollable-v dataset-settings-step-form"
+          (onFormChange)="handleDatasetSettingsFormChange($event)"
+        ></app-dataset-settings-step-form>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <button mat-stroked-button color="basic" matStepperPrevious>Back</button>
+          <button mat-stroked-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
+      <form [formGroup]="secondFormGroup">
+        <mat-form-field appearance="fill">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+                 required>
+        </mat-form-field>
+        <div>
+          <button mat-stroked-button color="basic" matStepperPrevious>Cancel</button>
+          <button mat-stroked-button color="primary" matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

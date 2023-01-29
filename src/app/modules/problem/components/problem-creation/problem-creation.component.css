@@ -1,0 +1,46 @@
+.flex-scrollable-v {
+  flex: auto;
+  height: 0px;
+  overflow-y: auto;
+}
+
+/*
+.flex-scrollable-v {
+  flex: 1 1 auto;
+  height: 0px;
+  overflow-y: auto;
+}
+*/
+
+mat-stepper {
+  background-color: transparent;
+}
+
+::ng-deep .mat-horizontal-stepper-wrapper {
+  height: 100%;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  height: 100%;
+}
+
+::ng-deep .mat-horizontal-stepper-content {
+  display: flex;
+  height: 100%;
+}
+
+.dataset-settings-step-form {
+  margin-left: 5%;
+  margin-bottom: 10px;
+  padding-right: 5%;
+}
+
+.problem-initialization-step-form {
+  margin: auto;
+  width: 80%;
+}
+
+.step-title {
+  margin-top: 20px;
+  text-align: center;
+}

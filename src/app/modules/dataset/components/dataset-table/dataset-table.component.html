@@ -1,0 +1,45 @@
+<mat-table [dataSource]="datasets" matSort>
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let dataset"> {{ dataset.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="filePath">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>File Path</mat-header-cell>
+        <mat-cell *matCellDef="let dataset"> {{ dataset.fileInfo.path }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fileName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>File Name</mat-header-cell>
+        <mat-cell *matCellDef="let dataset"> {{ dataset.fileInfo.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="problem">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Linked Problem</mat-header-cell>
+        <mat-cell *matCellDef="let dataset">
+          <mat-form-field>
+            <mat-select
+              [value]="dataset.linkedProblemId"
+              (selectionChange)="linkedProblemChange(dataset, $event)"
+            >
+              <mat-option [value]="undefined"></mat-option>
+              <mat-option *ngFor="let problem of problemSuggestions" [value]="problem.id">
+                {{ problem.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+        <mat-cell *matCellDef="let dataset">
+          <button mat-stroked-button color="primary" [routerLink]="'/dataset/view/' + dataset.id">SHOW</button>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.toggle(row)">
+    </mat-row>
+    <div *matNoDataRow>No records found</div>
+</mat-table>
+

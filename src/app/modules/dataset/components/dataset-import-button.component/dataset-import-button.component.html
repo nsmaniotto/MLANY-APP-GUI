@@ -1,0 +1,12 @@
+<input #datasetInput hidden="true" type="file" [accept]="validExtensions" (change)="selectDatasetFile($event)" />
+<button
+  aria-hidden="false"
+  aria-label="Import/Upload dataset file button"
+  (click)="openFileSelector()"
+  color="primary"
+  mat-raised-button
+  mat-icon-button
+  type="button"
+>
+  <mat-icon>upload</mat-icon>
+</button>
