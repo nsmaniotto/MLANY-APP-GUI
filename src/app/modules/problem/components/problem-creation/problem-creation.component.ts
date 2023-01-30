@@ -67,13 +67,11 @@ export class ProblemCreationComponent {
     this.datasetSettingsFormGroup.patchValue({ dataset: this.problemInitializationFormGroup.value.dataset });
 
     if (this.datasetSettingsFormGroup.value.dataset?.datasetContentInfo.columns) {
-      const targetColumns = this.problemInitializationFormGroup.value.dataset?.datasetContentInfo.columns.filter(
+      const targetColumn = this.problemInitializationFormGroup.value.dataset?.datasetContentInfo.columns.find(
         datasetColumn => datasetColumn.inputOutput === ColumnInputOutputEnum.OUTPUT
       );
 
-      if (targetColumns && targetColumns.length > 0) {
-        this.datasetSettingsFormGroup.patchValue({ targetColumn: targetColumns[0] });
-      }
+      this.datasetSettingsFormGroup.patchValue({ targetColumn });
     }
   }
 

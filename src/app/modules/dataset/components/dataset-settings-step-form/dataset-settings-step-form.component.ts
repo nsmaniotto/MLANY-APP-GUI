@@ -49,10 +49,10 @@ export class DatasetSettingsStepFormComponent implements OnInit {
     });
   }
 
-  public getCorrelationWithTargetColumn(column: DatasetColumn): number | null {
-    const matchedColumnCorrelations: DatasetColumnCorrelation[] = this.formGroup.value.targetColumn?.correlations.filter(
+  public getCorrelationWithTargetColumn(column: DatasetColumn): number {
+    const matchedColumnCorrelation: DatasetColumnCorrelation = this.formGroup.value.targetColumn?.correlations.find(
       (columnCorrelation: DatasetColumnCorrelation) => columnCorrelation.secondColumnId === column.id
     );
-    return matchedColumnCorrelations && matchedColumnCorrelations.length > 0 ? matchedColumnCorrelations[0].correlation : null;
+    return matchedColumnCorrelation?.correlation;
   }
 }
