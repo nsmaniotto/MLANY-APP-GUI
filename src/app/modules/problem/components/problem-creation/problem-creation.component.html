@@ -38,7 +38,15 @@
         fxLayout="column"
         fxLayoutAlign="space-between"
       >
-        <h1 class="step-title">Dataset Settings</h1>
+        <div class="step-title" fxLayout="row" fxLayoutAlign="center">
+          <h1>Dataset Settings</h1>
+          <h4 *ngIf="datasetSettingsFormGroup.value.dataset">
+            &nbsp;- {{ datasetSettingsFormGroup.value.dataset.fileInfo.name }}
+            <span *ngIf="datasetSettingsFormGroup.value.dataset?.datasetContentInfo?.lineCount">
+              ({{ datasetSettingsFormGroup.value.dataset.datasetContentInfo.lineCount }} lines)
+            </span>
+          </h4>
+        </div>
         <app-dataset-settings-step-form
           [formGroup]="datasetSettingsFormGroup"
           ngClass="flex-scrollable-v dataset-settings-step-form"

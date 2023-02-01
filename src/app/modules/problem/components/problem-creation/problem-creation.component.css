@@ -41,6 +41,13 @@ mat-stepper {
 }
 
 .step-title {
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 20px;
   text-align: center;
+}
+
+.step-title h4 {
+  font-style: italic;
+  margin-top: 5px;
 }
