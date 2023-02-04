@@ -1,3 +1,15 @@
+.error {
+  color: #f44336;
+}
+
 #dataset-analysis-in-progress-message {
   color: rgba(255, 255, 255, 0.3);
+}
+
+mat-header-cell {
+  font-weight: bold;
+}
+
+#matNoDataRow {
+  margin: 0 auto;
 }

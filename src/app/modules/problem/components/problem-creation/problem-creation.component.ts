@@ -42,7 +42,12 @@ export class ProblemCreationComponent {
     targetColumn: new FormControl<DatasetColumn | null>(
       null, Validators.required
     ),
-    targetColumnType: null
+    targetColumnType: new FormControl<string>(
+      ''
+    ),
+    contextColumns: new FormControl<DatasetColumn[]>(
+      [], Validators.required
+    )
   });
 
   public secondFormGroup = this._formBuilder.group({

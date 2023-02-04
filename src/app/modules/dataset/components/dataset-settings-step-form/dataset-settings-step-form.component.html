@@ -7,56 +7,89 @@
     fxLayout="column"
     fxLayoutAlign="center"
   >
-  <div
-    fxFlex
-    fxLayout="row"
-    fxLayoutAlign="space-evenly"
-  >
-    <div fxFlex="40" fxLayout="column">
-      <mat-label>Target Column *</mat-label>
-      <mat-form-field appearance="outline" fxFlexFill>
-        <mat-select
-          formControlName="targetColumn"
-          placeholder="Output column to be predicted"
-          required
-          [value]="this.formGroup.value.targetColumn"
-        >
-          <mat-option *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns" [value]="column">
-            {{ column.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="formGroup.controls.targetColumn.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-    <div fxFlex="40" fxLayout="column">
-      <div fxLayout="column" *ngIf="this.formGroup.value.targetColumn">
-        <mat-label>Target Column Type</mat-label>
+    <div
+      fxFlex
+      fxLayout="row"
+      fxLayoutAlign="space-evenly"
+    >
+      <div fxFlex="40" fxLayout="column">
+        <mat-label>Target Column *</mat-label>
         <mat-form-field appearance="outline" fxFlexFill>
           <mat-select
-            formControlName="targetColumnType"
-            placeholder="Leave empty if other"
+            formControlName="targetColumn"
+            placeholder="Output column to be predicted"
+            required
+            (selectionChange)="clearTargetColumnType(); clearContextColumns()"
+            [value]="this.formGroup.value.targetColumn"
           >
-            <mat-option [value]="undefined"></mat-option>
-            <mat-option *ngFor="let columnType of columnTypeSuggestions" [value]="columnType">
-              {{ columnType }}
+            <mat-option *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns" [value]="column">
+              {{ column.name }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="formGroup.controls.targetColumn.hasError('required')">This field is required</mat-error>
         </mat-form-field>
       </div>
+      <div fxFlex="40" fxLayout="column">
+        <div fxLayout="column" *ngIf="this.formGroup.value.targetColumn">
+          <mat-label>Target Column Type</mat-label>
+          <mat-form-field appearance="outline" fxFlexFill>
+            <mat-select
+              formControlName="targetColumnType"
+              placeholder="Leave empty if other"
+            >
+              <mat-option [value]="undefined"></mat-option>
+              <mat-option *ngFor="let columnType of columnTypeSuggestions" [value]="columnType">
+                {{ columnType }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-  </div>
-  <div>Dataset: {{ formGroup.value.dataset?.id }}</div>
-  <div>File Name: {{ formGroup.value.dataset?.fileInfo.name }}</div>
-  <div>File Path: {{ formGroup.value.dataset?.fileInfo.path }}</div>
-  <div>Dataset Content Info: {{ formGroup.value.dataset?.datasetContentInfo.id }}</div>
-  <div>Content analysis status: {{ formGroup.value.dataset?.datasetContentInfo.analysisStatus }}</div>
-  <div>Line count: {{ formGroup.value.dataset?.datasetContentInfo.lineCount }}</div>
-  <p>COLUMNS:</p>
-  <div *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns">
-    <div *ngIf="formGroup.value.targetColumn" >
-      id: {{ column.id }}, datasetContentInfoId: {{ column.datasetContentInfoId }}, name: {{ column.name }}, emptyValueCount: {{ column.emptyValueCount }}, correlation with target: {{ getCorrelationWithTargetColumn(column) | number:'1.0-2'}}
+
+    <div *ngIf="formGroup.value.targetColumn">
+      <h2>Select context used to predict <i>{{ formGroup.value.targetColumn.name }}</i></h2>
+      <mat-table [dataSource]="datasetColumnsTableDataSource" matSort (matSortChange)="onSortDatasetColumnsTable($event)">
+        <ng-container [matColumnDef]="CONTEXT_SELECTION_COLUMN_DEFINITION">
+          <mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            [ngClass]="{'error': formGroup.controls.contextColumns.hasError('required') && isContextColumnsListDirty}"
+          >
+            SELECT AS PREDICTION CONTEXT *
+          </mat-header-cell>
+          <mat-cell *matCellDef="let datasetColumn">
+            <mat-slide-toggle
+              (change)="onDatasetColumnContextToggle(datasetColumn, $event)"
+              class="example-margin"
+              color="primary"
+              [checked]="isInContextColumns(datasetColumn)"
+              [disabled]="datasetColumn.id === formGroup.value.targetColumn.id"
+            >
+            </mat-slide-toggle>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container [matColumnDef]="CORRELATION_COLUMN_DEFINITION">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>TARGET CORRELATION</mat-header-cell>
+          <mat-cell *matCellDef="let datasetColumn"> {{ getCorrelationWithTargetColumn(datasetColumn) | number:'1.0-2' }} </mat-cell>
+        </ng-container>
+
+        <ng-container [matColumnDef]="NAME_COLUMN_DEFINITION">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>NAME</mat-header-cell>
+          <mat-cell *matCellDef="let datasetColumn"> {{ datasetColumn.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container [matColumnDef]="EMPTY_VALUE_COUNT_COLUMN_DEFINITION">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>EMPTY VALUES</mat-header-cell>
+          <mat-cell *matCellDef="let datasetColumn"> {{ datasetColumn.emptyValueCount }} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <div *matNoDataRow>No records found</div>
+      </mat-table>
     </div>
-  </div>
   </div>
 </form>
 
