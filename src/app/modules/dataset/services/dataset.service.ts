@@ -32,10 +32,6 @@ export class DatasetService {
     return this.http.get<Dataset[]>(`${servicesUrl.datasetUrl}`);
   }
 
-  getDatasetFiles() {
-    return this.http.get<any>(`${servicesUrl.datasetUrl}/files`);
-  }
-
   getDatasetColumnTypes() {
     return this.http.get<ColumnTypeEnum[]>(`${servicesUrl.datasetUrl}/column/type`);
   }
