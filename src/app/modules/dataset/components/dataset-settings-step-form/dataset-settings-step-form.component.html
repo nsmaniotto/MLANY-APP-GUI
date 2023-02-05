@@ -54,7 +54,7 @@
           <mat-header-cell
             *matHeaderCellDef
             mat-sort-header
-            [ngClass]="{'error': formGroup.controls.contextColumns.hasError('required') && isContextColumnsListDirty}"
+            [ngClass]="{'error': formGroup.controls.contextColumns.hasError('required') && formGroup.controls.contextColumns.touched}"
           >
             SELECT AS PREDICTION CONTEXT *
           </mat-header-cell>
@@ -76,7 +76,7 @@
         </ng-container>
 
         <ng-container [matColumnDef]="NAME_COLUMN_DEFINITION">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>NAME</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>COLUMN NAME</mat-header-cell>
           <mat-cell *matCellDef="let datasetColumn"> {{ datasetColumn.name }} </mat-cell>
         </ng-container>
 

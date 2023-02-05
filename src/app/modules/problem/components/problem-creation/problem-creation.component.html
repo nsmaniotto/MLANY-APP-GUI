@@ -57,7 +57,7 @@
           fxLayoutAlign="space-between center"
         >
           <button mat-stroked-button color="basic" matStepperPrevious>Back</button>
-          <button mat-stroked-button color="primary" matStepperNext>Next</button>
+          <button (click)="markDatasetSettingsFormGroupTouched()" mat-stroked-button color="primary" matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>

@@ -38,8 +38,6 @@ export class DatasetSettingsStepFormComponent implements OnInit {
   ];
   public datasetColumnsTableDataSource = new MatTableDataSource<DatasetColumn>();
 
-  public isContextColumnsListDirty = false;
-
   constructor(
     private readonly datasetService: DatasetService
   ) {}
@@ -53,7 +51,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
         setTimeout(() => this.refreshDataset(), this.DATASET_REFRESH_WAIT_TIME_MS);
       }
 
-      if (!this.isAnalysisInProgress && hasDatasetChanged) {
+      if (hasDatasetChanged) {
         this.datasetColumnsTableDataSource.data = this.formGroup.value.dataset?.datasetContentInfo.columns;
         this.lastKnownDatasetId = this.formGroup.value.dataset?.id;
       }
@@ -76,7 +74,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
 
   public clearContextColumns(): void {
     this.formGroup.patchValue({ contextColumns: [] });
-    this.isContextColumnsListDirty = false;
+    this.formGroup.controls.contextColumns.markAsUntouched();
   }
 
   private loadColumnTypeSuggestions(): void {
@@ -121,8 +119,6 @@ export class DatasetSettingsStepFormComponent implements OnInit {
   public onDatasetColumnContextToggle(datasetColumn: DatasetColumn, event: MatSlideToggleChange): void {
     let contextColumns: DatasetColumn[] = this.formGroup.value.contextColumns;
 
-    this.isContextColumnsListDirty = true;
-
     if (event.checked) {
       // Add column to context
       contextColumns.push(datasetColumn);
@@ -132,6 +128,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
     }
 
     this.formGroup.patchValue({ contextColumns });
+    this.formGroup.controls.contextColumns.markAsTouched();
   }
 
   public isInContextColumns(datasetColumn: DatasetColumn): boolean {

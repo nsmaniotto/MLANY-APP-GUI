@@ -80,6 +80,11 @@ export class ProblemCreationComponent {
     }
   }
 
+  public markDatasetSettingsFormGroupTouched(): void {
+    this.datasetSettingsFormGroup.controls.targetColumn.markAsTouched();
+    this.datasetSettingsFormGroup.controls.contextColumns.markAsTouched();
+  }
+
   public handleDatasetSettingsFormChange(formGroup: FormGroup): void {
     this.datasetSettingsFormGroup = formGroup;
   }
