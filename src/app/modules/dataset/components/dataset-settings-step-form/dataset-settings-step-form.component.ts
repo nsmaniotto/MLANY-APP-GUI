@@ -104,6 +104,12 @@ export class DatasetSettingsStepFormComponent implements OnInit {
                   return this.compare(this.formGroup.value.contextColumns.indexOf(a), this.formGroup.value.contextColumns.indexOf(b), isAsc);
                 case this.CORRELATION_COLUMN_DEFINITION:
                   return this.compare(this.getCorrelationWithTargetColumn(a), this.getCorrelationWithTargetColumn(b), isAsc);
+                case this.TYPE_COLUMN_DEFINITION:
+                  return this.compare(
+                    this.formGroup.value.dataset.datasetContentInfo.columns.find((column: DatasetColumn) => column.id === a.id).type,
+                    this.formGroup.value.dataset.datasetContentInfo.columns.find((column: DatasetColumn) => column.id === b.id).type,
+                    isAsc
+                  );
                 default:
                   return 0;
             }
@@ -112,7 +118,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
     this.datasetColumnsTableDataSource.data = data;
   }
 
-  private compare(a: number, b: number, isAsc: boolean): number {
+  private compare(a: number | string, b: number | string, isAsc: boolean): number {
     let comparisonValue = 1;
     let directionValue = -1;
 
