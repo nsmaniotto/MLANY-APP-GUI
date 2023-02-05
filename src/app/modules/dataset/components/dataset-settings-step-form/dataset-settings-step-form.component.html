@@ -19,7 +19,7 @@
             formControlName="targetColumn"
             placeholder="Output column to be predicted"
             required
-            (selectionChange)="clearTargetColumnType(); clearContextColumns()"
+            (selectionChange)="handleTargetColumnChange()"
             [value]="this.formGroup.value.targetColumn"
           >
             <mat-option *ngFor="let column of formGroup.value.dataset?.datasetContentInfo.columns" [value]="column">

@@ -68,11 +68,16 @@ export class DatasetSettingsStepFormComponent implements OnInit {
     });
   }
 
-  public clearTargetColumnType(): void {
-    this.formGroup.patchValue({ targetColumnType: null });
+  public handleTargetColumnChange(): void {
+    this.updateTargetColumnType();
+    this.clearContextColumns();
   }
 
-  public clearContextColumns(): void {
+  private updateTargetColumnType(): void {
+    this.formGroup.patchValue({ targetColumnType: this.formGroup.value.targetColumn.type });
+  }
+
+  private clearContextColumns(): void {
     this.formGroup.patchValue({ contextColumns: [] });
     this.formGroup.controls.contextColumns.markAsUntouched();
   }
