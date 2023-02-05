@@ -2,6 +2,10 @@
   color: #f44336;
 }
 
+.context-column-type-selector {
+  margin-right: 20px;
+}
+
 #dataset-analysis-in-progress-message {
   color: rgba(255, 255, 255, 0.3);
 }

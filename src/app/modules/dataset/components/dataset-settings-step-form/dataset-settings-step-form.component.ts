@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,6 +20,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
   public readonly CONTEXT_SELECTION_COLUMN_DEFINITION = 'contextSelection';
   public readonly CORRELATION_COLUMN_DEFINITION = 'correlation';
   public readonly NAME_COLUMN_DEFINITION = 'name';
+  public readonly TYPE_COLUMN_DEFINITION = 'type';
   public readonly EMPTY_VALUE_COUNT_COLUMN_DEFINITION = 'emptyValueCount';
 
   @Input() formGroup: FormGroup;
@@ -34,7 +36,11 @@ export class DatasetSettingsStepFormComponent implements OnInit {
   private lastKnownDatasetId: number;
 
   public displayedColumns: string[] = [
-    this.CONTEXT_SELECTION_COLUMN_DEFINITION, this.CORRELATION_COLUMN_DEFINITION, this.NAME_COLUMN_DEFINITION, this.EMPTY_VALUE_COUNT_COLUMN_DEFINITION
+    this.CONTEXT_SELECTION_COLUMN_DEFINITION,
+    this.CORRELATION_COLUMN_DEFINITION,
+    this.NAME_COLUMN_DEFINITION,
+    this.TYPE_COLUMN_DEFINITION,
+    this.EMPTY_VALUE_COUNT_COLUMN_DEFINITION
   ];
   public datasetColumnsTableDataSource = new MatTableDataSource<DatasetColumn>();
 
@@ -145,5 +151,14 @@ export class DatasetSettingsStepFormComponent implements OnInit {
       (columnCorrelation: DatasetColumnCorrelation) => columnCorrelation.secondColumnId === column.id
     );
     return matchedColumnCorrelation?.correlation;
+  }
+
+  public updateDatasetColumnType(datasetColumn: DatasetColumn, event: MatSelectChange): void {
+    const newColumnType: string = event.value;
+    const datasetColumnToUpdate: DatasetColumn = this.formGroup.value.dataset.datasetContentInfo.columns.find((column: DatasetColumn) => column.id === datasetColumn.id);
+    const indexToUpdate: number = this.formGroup.value.dataset.datasetContentInfo.columns.indexOf(datasetColumnToUpdate);
+
+    this.formGroup.value.dataset.datasetContentInfo.columns[indexToUpdate] = {...datasetColumnToUpdate, type: newColumnType};
+    this.formGroup.patchValue({ dataset: this.formGroup.value.dataset });
   }
 }

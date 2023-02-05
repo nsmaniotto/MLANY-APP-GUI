@@ -48,7 +48,7 @@
     </div>
 
     <div *ngIf="formGroup.value.targetColumn">
-      <h2>Select context used to predict <i>{{ formGroup.value.targetColumn.name }}</i></h2>
+      <h2>Select context used to predict <i>'{{ formGroup.value.targetColumn.name }}'</i></h2>
       <mat-table [dataSource]="datasetColumnsTableDataSource" matSort (matSortChange)="onSortDatasetColumnsTable($event)">
         <ng-container [matColumnDef]="CONTEXT_SELECTION_COLUMN_DEFINITION">
           <mat-header-cell
@@ -78,6 +78,24 @@
         <ng-container [matColumnDef]="NAME_COLUMN_DEFINITION">
           <mat-header-cell *matHeaderCellDef mat-sort-header>COLUMN NAME</mat-header-cell>
           <mat-cell *matCellDef="let datasetColumn"> {{ datasetColumn.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container [matColumnDef]="TYPE_COLUMN_DEFINITION">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>COLUMN TYPE</mat-header-cell>
+          <mat-cell *matCellDef="let datasetColumn">
+            <mat-select
+              [disabled]="datasetColumn.id === formGroup.value.targetColumn.id"
+              ngClass="context-column-type-selector"
+              placeholder="Leave empty if other"
+              (selectionChange)="updateDatasetColumnType(datasetColumn, $event)"
+              [value]="datasetColumn.id === formGroup.value.targetColumn.id ? formGroup.value.targetColumnType : datasetColumn.type"
+            >
+              <mat-option [value]="undefined"></mat-option>
+              <mat-option *ngFor="let columnType of columnTypeSuggestions" [value]="columnType">
+                {{ columnType }}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
         </ng-container>
 
         <ng-container [matColumnDef]="EMPTY_VALUE_COUNT_COLUMN_DEFINITION">
