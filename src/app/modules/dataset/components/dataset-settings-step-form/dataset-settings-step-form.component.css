@@ -17,3 +17,7 @@ mat-header-cell {
 #matNoDataRow {
   margin: 0 auto;
 }
+
+.warning {
+  color: #f39c12;
+}
