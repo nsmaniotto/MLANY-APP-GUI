@@ -22,7 +22,14 @@
           fxLayoutAlign="space-between center"
         >
           <button mat-stroked-button color="basic" (click)="cancelProblemCreation()">Cancel</button>
-          <button mat-stroked-button color="primary" matStepperNext>Next</button>
+          <button
+            color="primary"
+            mat-button
+            matStepperNext
+            [ngClass]="problemInitializationFormGroup.valid ? 'mat-raised-button' : 'mat-stroked-button'"
+          >
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
@@ -57,7 +64,15 @@
           fxLayoutAlign="space-between center"
         >
           <button mat-stroked-button color="basic" matStepperPrevious>Back</button>
-          <button (click)="markDatasetSettingsFormGroupTouched()" mat-stroked-button color="primary" matStepperNext>Next</button>
+          <button
+            (click)="markDatasetSettingsFormGroupTouched()"
+            color="primary"
+            mat-stroked-button
+            matStepperNext
+            [ngClass]="datasetSettingsFormGroup.valid ? 'mat-raised-button' : 'mat-stroked-button'"
+          >
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
