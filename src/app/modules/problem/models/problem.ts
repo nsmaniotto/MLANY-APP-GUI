@@ -2,10 +2,11 @@ import { ModelTraining } from '../../model/models/modelTraining';
 import { ProblemTypeEnum } from '../constants/problemType.enum';
 import { ProblemSolving } from './problemSolving';
 
-export interface Problem {
+export class Problem {
   id: number;
   name: string;
-  type: ProblemTypeEnum;
+  linkedDatasetIds?: number[];
+  type?: ProblemTypeEnum;
   problemSolvings: ProblemSolving[];
   deployedModelFromTraining?: ModelTraining;
   endPoint?: string;

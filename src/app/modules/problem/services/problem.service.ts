@@ -10,6 +10,10 @@ import { Problem } from '../models/problem';
 export class ProblemService {
   constructor(private readonly http: HttpClient) {}
 
+  save(problem: Problem) {
+    return this.http.post<Problem>(`${servicesUrl.problemUrl}/save`, problem);
+  }
+
   createProblem(problem: Problem) {
     return this.http.post<Problem>(`${servicesUrl.problemUrl}/create`, problem);
   }

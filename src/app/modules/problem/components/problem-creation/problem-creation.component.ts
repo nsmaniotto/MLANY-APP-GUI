@@ -5,7 +5,8 @@ import { ColumnInputOutputEnum } from 'src/app/constants/columnInputOutput.enum'
 import { NavigationPathEnum } from 'src/app/constants/navigationPath.enum';
 import { Dataset } from 'src/app/modules/dataset/models/dataset';
 import { DatasetColumn } from 'src/app/modules/dataset/models/datasetColumn';
-import { ProblemFieldMaxLength, ProblemFieldMinLength } from '../../models/problem';
+import { Problem, ProblemFieldMaxLength, ProblemFieldMinLength } from '../../models/problem';
+import { ProblemService } from '../../services/problem.service';
 
 @Component({
   selector: 'app-problem-creation',
@@ -13,15 +14,16 @@ import { ProblemFieldMaxLength, ProblemFieldMinLength } from '../../models/probl
   styleUrls: ['./problem-creation.component.css']
 })
 export class ProblemCreationComponent {
+  private problem: Problem;
+
   public problemInitializationFormGroup = this._formBuilder.group({
-    name: [
-      null,
+    name: new FormControl<string | undefined>(undefined,
       [
         Validators.required,
         Validators.minLength(ProblemFieldMinLength.NAME),
         Validators.maxLength(ProblemFieldMaxLength.NAME)
       ]
-    ],
+    ),
     dataset: [
       new FormControl(new Dataset(),
         [
@@ -56,11 +58,27 @@ export class ProblemCreationComponent {
 
   constructor(
     private readonly _formBuilder: FormBuilder,
+    private readonly problemService: ProblemService,
     private readonly router: Router
   ) {}
 
   public cancelProblemCreation(): void {
     this.router.navigate([NavigationPathEnum.PROBLEM]);
+  }
+
+  public saveProblem(): void {
+    const updatedProblem = this.problem ? this.problem : new Problem();
+
+    if (this.problemInitializationFormGroup.valid) {
+      updatedProblem.name = this.problemInitializationFormGroup.value.name as string;
+      updatedProblem.linkedDatasetIds = [this.problemInitializationFormGroup.value.dataset?.id as number];
+
+      this.problemService.save(updatedProblem).subscribe(value => {
+        if (value) {
+          this.problem = value;
+        }
+      });
+    }
   }
 
   public handleProblemInitializationFormChange(formGroup: FormGroup): void {
