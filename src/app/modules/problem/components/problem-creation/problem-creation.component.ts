@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ColumnInputOutputEnum } from 'src/app/constants/columnInputOutput.enum';
+import { ColumnTypeEnum } from 'src/app/constants/columnType.enum';
 import { NavigationPathEnum } from 'src/app/constants/navigationPath.enum';
 import { Dataset } from 'src/app/modules/dataset/models/dataset';
 import { DatasetColumn } from 'src/app/modules/dataset/models/datasetColumn';
 import { Problem, ProblemFieldMaxLength, ProblemFieldMinLength } from '../../models/problem';
+import { ProblemSolving } from '../../models/problemSolving';
+import { ProblemSolvingColumn } from '../../models/problemSolvingColumn';
 import { ProblemService } from '../../services/problem.service';
+import { ProblemSolvingService } from '../../services/problemSolving.service';
 
 @Component({
   selector: 'app-problem-creation',
@@ -44,12 +48,22 @@ export class ProblemCreationComponent {
     targetColumn: new FormControl<DatasetColumn | null>(
       null, Validators.required
     ),
-    targetColumnType: new FormControl<string>(
-      ''
+    targetColumnType: new FormControl<ColumnTypeEnum | null>(
+      null
     ),
     contextColumns: new FormControl<DatasetColumn[]>(
       [], Validators.required
     )
+  });
+
+  public problemSolvingFormGroup = this._formBuilder.group({
+    problemSolving: [
+      new FormControl<ProblemSolving | null>(null,
+        [
+          Validators.required
+        ]
+      )
+    ]
   });
 
   public secondFormGroup = this._formBuilder.group({
@@ -59,6 +73,7 @@ export class ProblemCreationComponent {
   constructor(
     private readonly _formBuilder: FormBuilder,
     private readonly problemService: ProblemService,
+    private readonly problemSolvingService: ProblemSolvingService,
     private readonly router: Router
   ) {}
 
@@ -95,6 +110,33 @@ export class ProblemCreationComponent {
       );
 
       this.datasetSettingsFormGroup.patchValue({ targetColumn });
+    }
+  }
+
+  public startProblemSolving(): void {
+    if (this.datasetSettingsFormGroup.valid) {
+      const problemSolving = new ProblemSolving();
+      problemSolving.problemId = this.problem.id;
+      problemSolving.datasetId = this.datasetSettingsFormGroup.value.dataset?.id;
+
+      const problemSolvingColumns: ProblemSolvingColumn[] = [];
+      // Add target column
+      problemSolvingColumns.push({
+        ...this.datasetSettingsFormGroup.value.targetColumn,
+        type: this.datasetSettingsFormGroup.value.targetColumnType as ColumnTypeEnum,
+        inputOutput: ColumnInputOutputEnum.OUTPUT
+      });
+      // Add context columns
+      this.datasetSettingsFormGroup.value.contextColumns?.forEach(contextColumn =>
+        problemSolvingColumns.push({...contextColumn, inputOutput: ColumnInputOutputEnum.INPUT})
+      );
+      problemSolving.problemSolvingColumns = problemSolvingColumns;
+
+      this.problemSolvingService.createProblemSolving(problemSolving).subscribe(value => {
+        if (value) {
+          this.problemSolvingFormGroup.patchValue({ problemSolving: value });
+        }
+      });
     }
   }
 

@@ -33,7 +33,7 @@ export class ProblemDetailsComponent implements OnInit {
       this.problemSolvingColumnService.getProblemSolvingColumnsByProblemSolvingId(this.problem.deployedModelFromTraining.problemSolvingId).subscribe(columns => {
         if (columns) {
           const inputJson: any = {};
-          columns.forEach(column => inputJson[column.name] = '');
+          columns.forEach(column => inputJson[column.name as string] = '');
 
           const jsonPredictionRequest: any = {'input':inputJson};
           this.jsonPredictionPreview = jsonPredictionRequest as JSON;
