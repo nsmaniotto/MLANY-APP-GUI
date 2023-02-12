@@ -55,9 +55,7 @@ export class DatasetSettingsStepFormComponent implements OnInit {
 
       if (this.isAnalysisInProgress) {
         setTimeout(() => this.refreshDataset(), this.DATASET_REFRESH_WAIT_TIME_MS);
-      }
-
-      if (hasDatasetChanged) {
+      } else if (hasDatasetChanged) {
         this.datasetColumnsTableDataSource.data = this.formGroup.value.dataset?.datasetContentInfo.columns;
         this.lastKnownDatasetId = this.formGroup.value.dataset?.id;
       }
