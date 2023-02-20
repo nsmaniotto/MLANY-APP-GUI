@@ -8,7 +8,9 @@ import { ProblemService } from '../../services/problem.service';
   styleUrls: ['./problem-list.component.css']
 })
 export class ProblemListComponent {
-  problems: Problem[] = [];
+  public problems: Problem[] = [];
+
+  public problemsLoaded = false;
 
   constructor(private readonly problemService: ProblemService) {}
 
@@ -20,6 +22,7 @@ export class ProblemListComponent {
     this.problemService.getProblems().subscribe(value => {
       if (value) {
         this.problems = value;
+        this.problemsLoaded = true;
       }
     });
   }
