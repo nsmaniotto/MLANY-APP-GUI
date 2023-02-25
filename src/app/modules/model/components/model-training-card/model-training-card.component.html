@@ -1,0 +1,93 @@
+<mat-card class="model-solving-card">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+    <mat-card-subtitle [title]="_modelTraining.modelInstance.model.name">{{ _modelTraining.modelInstance.model.name }}</mat-card-subtitle>
+    <div class="no-wrap" fxLayoutGap="0px">
+      <mat-icon
+        aria-label="Fast"
+        ngClass="lightning-bolt-icon"
+        *ngIf="isFastest && _modelTraining.status === FINISHED_STATUS"
+        title="Fastest average prediction time"
+      >bolt</mat-icon>
+      <mat-icon
+        aria-label="Economic"
+        ngClass="economic-icon"
+        *ngIf="isLightest && _modelTraining.status === FINISHED_STATUS"
+        title="Lightest model"
+      >eco</mat-icon>
+      <mat-icon
+        aria-label="Efficient"
+        ngClass="speed-icon"
+        *ngIf="isMostEfficient&& _modelTraining.status === FINISHED_STATUS"
+        title="Most efficient model"
+      >speed</mat-icon>
+      <mat-icon aria-label="Stable"
+        ngClass="scale-icon"
+        *ngIf="isMostStable && _modelTraining.status === FINISHED_STATUS"
+        title="Most stable model"
+      >scale</mat-icon>
+      <mat-icon
+        aria-label="Spacing"
+        *ngIf="_modelTraining.status !== FINISHED_STATUS || !isFastest && !isLightest && !isMostEfficient && !isMostStable"
+      ></mat-icon>
+    </div>
+  </div>
+  <mat-card-content
+    fxLayout="row"
+    fxLayoutAlign="center center"
+  >
+    <ngx-gauge
+      append="%"
+      foregroundColor="#7b1fa2"
+      prepend="~"
+      [size]="gaugeSize"
+      [thick]="gaugeThick"
+      [value]="performance"
+    >
+      <ngx-gauge-value>
+          {{ performance | number: '1.0-2' }}
+      </ngx-gauge-value>
+      <ngx-gauge-label>
+          ± {{ performanceStandardDeviation | number: '1.0-2' }}
+          <br>
+          {{ performanceCategory }}
+      </ngx-gauge-label>
+    </ngx-gauge>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="space-between">
+    <button color="basic" [disabled]="_modelTraining.status === IN_PROGRESS_STATUS" mat-stroked-button>
+      <mat-icon
+        aria-label="Show details"
+        title="Show details"
+      >
+        visibility
+      </mat-icon>
+    </button>
+    <button
+      (click)="deployModel()"
+      [color]="isModelToBeDeployed ? 'primary' : 'basic'"
+      [disabled]="_modelTraining.status !== FINISHED_STATUS"
+      mat-stroked-button
+      [ngClass]="isModelToBeDeployed ? 'mat-flat-button' : 'mat-stroked-button'"
+      style="margin: 0px"
+    >
+      <mat-icon
+        aria-label="Deploy model"
+        title="Deploy model"
+      >
+        cloud_upload
+      </mat-icon>
+    </button>
+  </mat-card-actions>
+  <mat-card-footer>
+    <!-- Solving in progress -->
+    <mat-progress-bar *ngIf="_modelTraining.status === IN_PROGRESS_STATUS" mode="indeterminate"></mat-progress-bar>
+    <!-- Solving finished -->
+    <mat-progress-bar *ngIf="_modelTraining.status === FINISHED_STATUS" mode="determinate" value="100"></mat-progress-bar>
+    <!-- Solving failed -->
+    <mat-progress-bar *ngIf="_modelTraining.status === FAILED_STATUS" color="warn" mode="determinate" value="100"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>

@@ -1,0 +1,45 @@
+.economic-icon {
+  color: #27ae60;
+}
+
+.model-solving-card {
+  max-height: 200px;
+  max-width: 200px;
+  margin-bottom: 10px;
+  min-width: 200px;
+}
+
+.lightning-bolt-icon {
+  color: #f1c40f;
+}
+
+mat-card-actions {
+  margin-bottom: 0px;
+}
+
+mat-card-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0px;
+}
+
+ngx-gauge-value {
+  font-size: 20px;
+}
+
+ngx-gauge-label {
+  font-size: 10px;
+}
+
+.no-wrap{
+  flex: 0 0 auto;
+}
+
+.scale-icon {
+  color: rgba(255,255,255,.7);
+}
+
+.speed-icon {
+  color: #3498db;
+}

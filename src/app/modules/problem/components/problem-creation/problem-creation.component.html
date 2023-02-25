@@ -78,6 +78,46 @@
       </form>
     </mat-step>
 
+    <mat-step
+      fxFlex
+      label="PROBLEM SOLVING"
+      [stepControl]="problemSolvingFormGroup"
+    >
+      <form
+        [formGroup]="problemSolvingFormGroup"
+        fxFlex
+        fxLayout="column"
+        fxLayoutAlign="space-between"
+      >
+        <div class="step-title" fxLayout="row" fxLayoutAlign="center">
+          <h1>Problem Solving</h1>
+          <h4>
+            &nbsp;- {{ problemInitializationFormGroup.value.name }}
+          </h4>
+        </div>
+        <app-problem-solving-step-form
+          [formGroup]="problemSolvingFormGroup"
+          ngClass="flex-scrollable-v problem-solving-step-form"
+          (onFormChange)="handleProblemSolvingFormChange($event)"
+        ></app-problem-solving-step-form>
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <button mat-stroked-button color="basic" matStepperPrevious>Back</button>
+          <button
+            (click)="markProblemSolvingFormGroupTouched()"
+            color="primary"
+            mat-stroked-button
+            matStepperNext
+            [ngClass]="problemSolvingFormGroup.valid ? 'mat-raised-button' : 'mat-stroked-button'"
+          >
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
     <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
       <form [formGroup]="secondFormGroup">
         <mat-form-field appearance="fill">

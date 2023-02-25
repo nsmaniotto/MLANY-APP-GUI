@@ -1,0 +1,42 @@
+<form
+  *ngIf="this.formGroup.value.problemSolving?.modelTrainings?.length > 0;else loadingModelTrainings"
+  [formGroup]="formGroup"
+>
+  <div
+    fxFlex
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <h3
+      [ngClass]="{'error': formGroup.controls.modelToBeDeployed.hasError('required') && formGroup.controls.modelToBeDeployed.touched}"
+    >
+      Select a model to deploy *
+    </h3>
+    <div
+      fxFlex
+      fxLayout="row wrap"
+      fxLayoutAlign="center center"
+      fxLayoutGap="10px"
+    >
+      <app-model-training-card
+        *ngFor="let modelTraining of this.formGroup.value.problemSolving?.modelTrainings"
+        [modelTraining]="modelTraining"
+        [isFastest]="fastestModelId === modelTraining.id"
+        [isLightest]="lightestModelId === modelTraining.id"
+        [isMostEfficient]="mostEfficientModelId === modelTraining.id"
+        [isMostStable]="mostStableModelId === modelTraining.id"
+        [isModelToBeDeployed]="formGroup.value.modelToBeDeployed?.id === modelTraining.modelInstance?.id"
+        (onDeploy)="deploy($event)"
+      ></app-model-training-card>
+    </div>
+  </div>
+</form>
+
+<ng-template #loadingModelTrainings>
+  <div
+    fxFill
+    fxLayout="column"
+    fxLayoutAlign="center center">
+      <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

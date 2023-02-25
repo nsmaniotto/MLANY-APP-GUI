@@ -4,14 +4,6 @@
   overflow-y: auto;
 }
 
-/*
-.flex-scrollable-v {
-  flex: 1 1 auto;
-  height: 0px;
-  overflow-y: auto;
-}
-*/
-
 mat-stepper {
   background-color: transparent;
 }
@@ -38,6 +30,10 @@ mat-stepper {
 .problem-initialization-step-form {
   margin: auto;
   width: 80%;
+}
+
+.problem-solving-step-form {
+  margin-bottom: 10px;
 }
 
 .step-title {

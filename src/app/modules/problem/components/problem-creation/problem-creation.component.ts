@@ -6,6 +6,7 @@ import { ColumnTypeEnum } from 'src/app/constants/columnType.enum';
 import { NavigationPathEnum } from 'src/app/constants/navigationPath.enum';
 import { Dataset } from 'src/app/modules/dataset/models/dataset';
 import { DatasetColumn } from 'src/app/modules/dataset/models/datasetColumn';
+import { ModelInstance } from 'src/app/modules/model/models/modelInstance';
 import { Problem, ProblemFieldMaxLength, ProblemFieldMinLength } from '../../models/problem';
 import { ProblemSolving } from '../../models/problemSolving';
 import { ProblemSolvingColumn } from '../../models/problemSolvingColumn';
@@ -19,6 +20,8 @@ import { ProblemSolvingService } from '../../services/problemSolving.service';
 })
 export class ProblemCreationComponent {
   private problem: Problem;
+
+  private knownProblemSolvingColumns: ProblemSolvingColumn[];
 
   public problemInitializationFormGroup = this._formBuilder.group({
     name: new FormControl<string | undefined>(undefined,
@@ -57,13 +60,12 @@ export class ProblemCreationComponent {
   });
 
   public problemSolvingFormGroup = this._formBuilder.group({
-    problemSolving: [
-      new FormControl<ProblemSolving | null>(null,
-        [
-          Validators.required
-        ]
-      )
-    ]
+    problemSolving: new FormControl<ProblemSolving | null>(
+      null, Validators.required
+    ),
+    modelToBeDeployed: new FormControl<ModelInstance | null>(
+      null, Validators.required
+    )
   });
 
   public secondFormGroup = this._formBuilder.group({
@@ -115,10 +117,6 @@ export class ProblemCreationComponent {
 
   public startProblemSolving(): void {
     if (this.datasetSettingsFormGroup.valid) {
-      const problemSolving = new ProblemSolving();
-      problemSolving.problemId = this.problem.id;
-      problemSolving.datasetId = this.datasetSettingsFormGroup.value.dataset?.id;
-
       const problemSolvingColumns: ProblemSolvingColumn[] = [];
       // Add target column
       problemSolvingColumns.push({
@@ -130,14 +128,46 @@ export class ProblemCreationComponent {
       this.datasetSettingsFormGroup.value.contextColumns?.forEach(contextColumn =>
         problemSolvingColumns.push({...contextColumn, inputOutput: ColumnInputOutputEnum.INPUT})
       );
-      problemSolving.problemSolvingColumns = problemSolvingColumns;
 
-      this.problemSolvingService.createProblemSolving(problemSolving).subscribe(value => {
-        if (value) {
-          this.problemSolvingFormGroup.patchValue({ problemSolving: value });
-        }
-      });
+      if (!this.areProblemSolvingColumnsSame(problemSolvingColumns, this.knownProblemSolvingColumns)) {
+        this.knownProblemSolvingColumns = problemSolvingColumns;
+
+        const problemSolving = new ProblemSolving();
+        problemSolving.problemId = this.problem.id;
+        problemSolving.datasetId = this.datasetSettingsFormGroup.value.dataset?.id;
+
+        problemSolving.problemSolvingColumns = problemSolvingColumns;
+
+        this.problemSolvingService.createProblemSolving(problemSolving).subscribe(value => {
+          if (value) {
+            this.problemSolvingFormGroup.patchValue({ problemSolving: value });
+            this.problemSolvingFormGroup.patchValue({ modelToBeDeployed: null });
+          }
+        });
+      }
     }
+  }
+
+  private areProblemSolvingColumnsSame(_arr1: ProblemSolvingColumn[], _arr2: ProblemSolvingColumn[]) {
+    if (
+      !Array.isArray(_arr1)
+      || !Array.isArray(_arr2)
+      || _arr1.length !== _arr2.length
+      ) {
+        return false;
+      }
+
+    // .concat() to not mutate arguments
+    const arr1 = _arr1.concat().sort();
+    const arr2 = _arr2.concat().sort();
+
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i].id !== arr2[i].id) {
+            return false;
+        }
+    }
+
+    return true;
   }
 
   public markDatasetSettingsFormGroupTouched(): void {
@@ -147,5 +177,14 @@ export class ProblemCreationComponent {
 
   public handleDatasetSettingsFormChange(formGroup: FormGroup): void {
     this.datasetSettingsFormGroup = formGroup;
+  }
+
+  public markProblemSolvingFormGroupTouched(): void {
+    this.problemSolvingFormGroup.controls.problemSolving.markAsTouched();
+    this.problemSolvingFormGroup.controls.modelToBeDeployed.markAsTouched();
+  }
+
+  public handleProblemSolvingFormChange(formGroup: FormGroup): void {
+    this.problemSolvingFormGroup = formGroup;
   }
 }
