@@ -48,7 +48,7 @@
     </div>
 
     <div *ngIf="formGroup.value.targetColumn">
-      <h2>Select context used to predict <i>'{{ formGroup.value.targetColumn.name }}'</i></h2>
+      <h3>Select context used to predict <i>'{{ formGroup.value.targetColumn.name }}'</i></h3>
       <mat-table [dataSource]="datasetColumnsTableDataSource" matSort (matSortChange)="onSortDatasetColumnsTable($event)">
         <ng-container [matColumnDef]="CONTEXT_SELECTION_COLUMN_DEFINITION">
           <mat-header-cell
